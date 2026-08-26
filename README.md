@@ -152,7 +152,7 @@ The number of dictionaries in `small_training_schedules` and `finetuning_schedul
 When a schedule is `None`, its start time is sampled uniformly as
 
 $$
-t_{\mathrm{on}} \sim \mathcal{U}(0,\,\texttt{max start time}),
+t_{\mathrm{on}} \sim \mathcal{U}(0,(\texttt{max start time})),
 $$
 
 while `turn_off_time` defaults to `T` and both boundary ramp-rate limits default to `np.inf`.
@@ -241,7 +241,7 @@ with
 
 $$
 P_{\mathrm{steady}}
-=\texttt{datacenter_capacity}\times\texttt{steady_component_ratio}.
+=(\texttt{datacenter capacity}) \times (\texttt{steady component ratio}).
 $$
 
 ---
