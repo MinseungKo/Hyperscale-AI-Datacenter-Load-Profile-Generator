@@ -39,10 +39,10 @@ For a smaller/current AI datacenter, the AI workload can be constructed using on
 |---|---|
 | `T` | Duration of the generated training workload segment. |
 | `Fs` | Sampling frequency in samples per second. |
-| `F` | Range from which the nominal training-cycle frequency \(f_0\) is sampled, in hertz. |
+| `F` | Range from which the nominal training-cycle frequency $f_0$ is sampled, in hertz. |
 | `up_ratio` | Range of the fraction of each cycle assigned to the high-power state. |
 | `p_hat_tr` | Nominal power of the training workload. |
-| `sigma_xi` | Standard deviation of the cycle-duration perturbation \(\xi_i\). |
+| `sigma_xi` | Standard deviation of the cycle-duration perturbation $\xi_i$. |
 | `sigma_delta` | Standard deviation of the cycle-level power-offset variables. |
 | `mu_delta` | Mean reduction applied during the down state. |
 | `sigma_eta_up` | Standard deviation, or sampling range, of pointwise noise during the up state. |
@@ -62,7 +62,7 @@ The native training waveform is generated as alternating high-power and down-sta
 |---|---|
 | `T` | Duration of the generated fine-tuning workload segment. |
 | `Fs` | Sampling frequency in samples per second. |
-| `F` | Range from which the nominal fine-tuning-cycle frequency \(f_1\) is sampled, in hertz. |
+| `F` | Range from which the nominal fine-tuning-cycle frequency $f_1$ is sampled, in hertz. |
 | `tail_ratio` | Range of the fraction of each cycle assigned to the high-power tail state. |
 | `p_hat_ft` | Nominal power of one fine-tuning workload. |
 | `sigma_zeta` | Standard deviation of the fine-tuning cycle-duration perturbation. |
@@ -85,37 +85,37 @@ Each training or fine-tuning workload can be assigned an individual schedule. Th
 |---|---|
 | `turn_on_time` | Workload start time in seconds. This is the actual start of the native training/fine-tuning waveform. |
 | `turn_off_time` | Time in seconds at which the workload becomes exactly zero. |
-| `ramp_up_ratio` | Maximum start-up ramp rate normalized by the workload nominal power, in \(\mathrm{s}^{-1}\). |
-| `ramp_down_ratio` | Maximum shut-down ramp rate normalized by the workload nominal power, in \(\mathrm{s}^{-1}\). |
+| `ramp_up_ratio` | Maximum start-up ramp rate normalized by the workload nominal power, in $\mathrm{s}^{-1}$. |
+| `ramp_down_ratio` | Maximum shut-down ramp rate normalized by the workload nominal power, in $\mathrm{s}^{-1}$. |
 
-For a workload with nominal power \(\hat P\), the corresponding absolute ramp-rate limits are
+For a workload with nominal power $\hat P$, the corresponding absolute ramp-rate limits are
 
-\[
+$$
 R_{\mathrm{up}} = r_{\mathrm{up}}\hat P,
 \qquad
 R_{\mathrm{down}} = r_{\mathrm{down}}\hat P.
-\]
+$$
 
 At start-up, the workload begins from zero at `turn_on_time` and is limited by
 
-\[
+$$
 P[k] \le P[k-1] + R_{\mathrm{up}}\Delta t,
 \qquad \Delta t=\frac{1}{F_s}.
-\]
+$$
 
 The ramp constraint is applied only until the ramped signal reaches the native workload waveform. After that point, the original cyclic training/fine-tuning waveform is preserved.
 
 At shut-down, `turn_off_time` is the exact zero-load boundary. The final portion of the workload is processed backward from
 
-\[
+$$
 P(t_{\mathrm{off}})=0
-\]
+$$
 
 using the limit
 
-\[
+$$
 P[k] \le P[k+1] + R_{\mathrm{down}}\Delta t.
-\]
+$$
 
 Therefore, `turn_off_time` is **not** the start of the ramp-down. The ramp-down begins automatically at the latest earlier time required to reach zero while satisfying the specified ramp-rate limit.
 
@@ -153,9 +153,9 @@ The number of dictionaries in `small_training_schedules` and `finetuning_schedul
 
 When a schedule is `None`, its start time is sampled uniformly as
 
-\[
+$$
 t_{\mathrm{on}} \sim \mathcal{U}(0,\,\texttt{max_start_time}),
-\]
+$$
 
 while `turn_off_time` defaults to `T` and both boundary ramp-rate limits default to `np.inf`.
 
@@ -186,9 +186,9 @@ Requested times are mapped to the nearest sample index according to `Fs`; the sa
 
 The three nominal workload ratios must satisfy
 
-\[
+$$
 r_{\mathrm{large}}+r_{\mathrm{small}}+r_{\mathrm{ft}}=1.
-\]
+$$
 
 ### Interpretation of `Ntr` and `Nft`
 
@@ -229,22 +229,22 @@ For each workload, `workload_info` includes the requested and sample-aligned tur
 
 The ratios must satisfy
 
-\[
+$$
 r_{\mathrm{steady}}+r_{\mathrm{fluctuating}}=1.
-\]
+$$
 
 The total datacenter load is constructed as
 
-\[
+$$
 P_{\mathrm{DC}}(t)=P_{\mathrm{steady}}+P_{\mathrm{AI}}(t),
-\]
+$$
 
 with
 
-\[
+$$
 P_{\mathrm{steady}}
 =\texttt{datacenter_capacity}\times\texttt{steady_component_ratio}.
-\]
+$$
 
 ---
 
