@@ -117,8 +117,6 @@ $$
 P[k] \le P[k+1] + R_{\mathrm{down}}\Delta t.
 $$
 
-Therefore, `turn_off_time` is **not** the start of the ramp-down. The ramp-down begins automatically at the latest earlier time required to reach zero while satisfying the specified ramp-rate limit.
-
 If `ramp_up_ratio=np.inf` or `ramp_down_ratio=np.inf`, the corresponding boundary ramp constraint is disabled.
 
 ### Schedule examples
@@ -154,7 +152,7 @@ The number of dictionaries in `small_training_schedules` and `finetuning_schedul
 When a schedule is `None`, its start time is sampled uniformly as
 
 $$
-t_{\mathrm{on}} \sim \mathcal{U}(0,\,\texttt{max_start_time}),
+t_{\mathrm{on}} \sim \mathcal{U}(0,\,\texttt{max start time}),
 $$
 
 while `turn_off_time` defaults to `T` and both boundary ramp-rate limits default to `np.inf`.
@@ -177,7 +175,7 @@ Requested times are mapped to the nearest sample index according to `Fs`; the sa
 | `finetuning_total_ratio` | Total fraction assigned collectively to all fine-tuning workloads. |
 | `Ntr` | Number of small training workloads. |
 | `Nft` | Number of fine-tuning workloads. |
-| `max_start_time` | Upper bound of the default random start-time interval when a workload schedule does not explicitly specify `turn_on_time`. |
+| `max_start_time` | Upper bound of the default random start time interval when a workload schedule does not explicitly specify `turn_on_time`. |
 | `large_training_schedule` | Schedule dictionary for the large training workload, or `None` for the default random-start behavior. |
 | `small_training_schedules` | List of schedule dictionaries for the `Ntr` small training workloads. |
 | `finetuning_schedules` | List of schedule dictionaries for the `Nft` fine-tuning workloads. |
